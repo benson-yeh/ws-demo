@@ -36,7 +36,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'wsdl4j:wsdl4j'
     compileOnly 'org.projectlombok:lombok'
-    jaxb "org.glassfish.jaxb:jaxb-xjc:3.0.2"
+    jaxb("org.glassfish.jaxb:jaxb-xjc")
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
