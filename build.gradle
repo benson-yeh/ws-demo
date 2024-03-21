@@ -45,23 +45,27 @@ dependencies {
 }
 
 tasks.register('genJaxb') {
+    // Define a list of xsd files and their output package
+    ext.schemas = [["src/main/resources/countries.xsd", "com.jaxb.countries"],
+                   ["src/main/resources/people.xsd", "com.jaxb.people"]]
+
     ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
-    ext.schema = "src/main/resources/countries.xsd"
 
-    inputs.file schema
-    outputs.dir sourcesDir
+    doFirst {
+        delete(sourcesDir)
+    }
 
-    delete(sourcesDir)
-
-    doLast() {
+    doLast {
         project.ant {
             taskdef name: "xjc",
                     classname: "com.sun.tools.xjc.XJCTask",
                     classpath: configurations.jaxb.asPath
             mkdir(dir: sourcesDir)
-            xjc(destdir: sourcesDir, schema: schema) {
-                arg(value: "-XautoNameResolution")
-                produces(dir: sourcesDir, includes: "**/*.java")
+
+            schemas.each { schema ->
+                xjc(destdir: sourcesDir, schema: schema[0], package: schema[1]) {
+                    arg(value: "-XautoNameResolution")
+                }
             }
         }
     }
